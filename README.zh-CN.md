@@ -16,6 +16,7 @@
 | `export-manuscript` | 使用 Pandoc 将各章编译为 epub、pdf 或 docx。 |
 | `translation-gates` | 用脚本对照原文与译文：文件配对、段落与标题数量一致性、数字、仍为原文语言的段落、截断、术语表。 |
 | `translation-mqm` | MQM 风格的抽样评分，评审在独立会话中进行，并衡量评分噪声。 |
+| `translate-end-to-end` | 全自动模式：只需目标语言和一个文件或文件夹，即可完成翻译、运行校验、由独立评审逐段评分、对未通过的段落重译（每段最多 10 次）、检查一致性并生成报告。无需人工介入。 |
 
 创作类技能（写场景、头脑风暴、人物弧线分析等）被有意排除在外：译者不决定情节或结构。
 
@@ -31,11 +32,19 @@ flowchart LR
   F --> G[export-manuscript]
 ```
 
+## 全自动模式
+
+```text
+/translate-end-to-end language=<language-tag> path=<文件或文件夹>
+```
+
+只需提供目标语言，以及一个文件或一个文件夹（其中的文件共同组成一部作品）。它会自行建立工作区，完成翻译、运行校验、由独立评审逐段评分、对未通过的段落重译（每段最多 10 次，始终保留最佳版本）、检查一致性、由第二位评审抽查，并生成报告。全程无需人工介入；结果经过机器验证，未经人工审校。
+
 ## 目录结构
 
 ```text
 skills/              每个技能一个文件夹（SKILL.md + 按需加载的 references/）
-scripts/             translation_gates.py、mqm_score.py 及其测试（Python 3，仅使用标准库）
+scripts/             translation_gates.py、mqm_score.py、e2e_controller.py 及其测试（Python 3，仅使用标准库）
 templates/project/   可复制到书籍项目中的 translation/ 骨架
 install.sh           通过符号链接将技能链接到 ~/.claude/skills
 ```
@@ -62,7 +71,7 @@ cp -r templates/project/translation /path/to/book/translation
 ```bash
 python3 scripts/translation_gates.py --source <原文目录> --target <manuscript> --glossary <glossary.md> --glob '0*.md'
 python3 scripts/mqm_score.py sample --source <原文目录> --target <manuscript> --glob '0*.md' -n 40 --seed 1 --out sample.json
-python3 -m unittest scripts/test_translation_gates.py scripts/test_mqm_score.py
+python3 -m unittest scripts/test_translation_gates.py scripts/test_mqm_score.py scripts/test_e2e_controller.py
 ```
 
 这些校验（gates）只报告问题。数字被改动会导致运行失败，而术语和仍为原文语言的段落只给出警告（使用 `--strict` 可使其也失败）。在修改任何内容之前先阅读抽样结果，是流程的一部分。

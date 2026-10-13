@@ -16,6 +16,7 @@ Skills do Claude Code, scripts e templates para traduzir ficção escrita em Mar
 | `export-manuscript` | Compila os capítulos em epub, pdf ou docx com Pandoc. |
 | `translation-gates` | Compara tradução e fonte por script: pareamento de arquivos, paridade de parágrafos e títulos, números, trechos devolvidos na língua de origem, truncamento, glossário. |
 | `translation-mqm` | Nota por amostragem no estilo MQM, com o juiz em uma sessão separada e medição de ruído. |
+| `translate-end-to-end` | Modo totalmente automático: recebe só um idioma e um arquivo ou pasta, e então traduz, roda os gates, julga cada trecho com um juiz independente, retraduz os trechos reprovados (até 10 vezes cada), checa a consistência e gera um relatório. Sem etapa humana. |
 
 As skills de criação de história (escrever cenas, brainstorm, análise de arco e similares) ficam de fora de propósito: quem traduz não decide enredo nem estrutura.
 
@@ -31,11 +32,19 @@ flowchart LR
   F --> G[export-manuscript]
 ```
 
+## Modo totalmente automático
+
+```text
+/translate-end-to-end language=<language-tag> path=<arquivo-ou-pasta>
+```
+
+Recebe apenas o idioma de destino e um arquivo, ou uma pasta cujos arquivos formam uma mesma obra. Monta o espaço de trabalho sozinho, traduz, roda os gates, julga cada trecho com um juiz independente, retraduz os trechos reprovados (até 10 vezes cada, sempre guardando a melhor versão), checa a consistência, audita com um segundo juiz e gera um relatório. Nenhuma etapa humana é necessária; o resultado é verificado por máquina, não revisado por pessoas.
+
 ## Estrutura
 
 ```text
 skills/              uma pasta por skill (SKILL.md + references/ carregadas sob demanda)
-scripts/             translation_gates.py, mqm_score.py e seus testes (Python 3, só stdlib)
+scripts/             translation_gates.py, mqm_score.py, e2e_controller.py e seus testes (Python 3, só stdlib)
 templates/project/   esqueleto translation/ para copiar para o projeto do livro
 install.sh           liga as skills em ~/.claude/skills por symlink
 ```
@@ -62,7 +71,7 @@ Preencha `context/source-profile.md`, resolva as entradas `TO DECIDE` do glossá
 ```bash
 python3 scripts/translation_gates.py --source <fontes> --target <manuscript> --glossary <glossary.md> --glob '0*.md'
 python3 scripts/mqm_score.py sample --source <fontes> --target <manuscript> --glob '0*.md' -n 40 --seed 1 --out sample.json
-python3 -m unittest scripts/test_translation_gates.py scripts/test_mqm_score.py
+python3 -m unittest scripts/test_translation_gates.py scripts/test_mqm_score.py scripts/test_e2e_controller.py
 ```
 
 Os gates apenas relatam. Um número alterado reprova a execução, enquanto terminologia e trechos devolvidos na língua de origem só geram aviso (use `--strict` para reprovar nesses casos). Ler a amostra antes de corrigir qualquer coisa faz parte do processo.

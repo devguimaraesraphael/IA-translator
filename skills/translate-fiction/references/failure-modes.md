@@ -41,8 +41,10 @@ investigating a suspect chapter.
   the translator "fixes" those passages into the target language.
 - **Cause:** the rule for untranslatables was not given to the translator or to the
   verification.
-- **Fix:** record such passages in the glossary with the Preserve policy and make the
-  not-translated check ignore them.
+- **Fix:** confirm that the passage actually requires preservation under the project
+  policy before adding it to Preserve and excluding it from the untranslated check.
+  Proper names and labels are not automatically Preserve: use the exonym and
+  descriptive-name rules in `memory-and-glossary.md`.
 - **Detect:** before flagging, consult the Preserve list; after translating, confirm
   that each Preserve item remains intact in the output.
 
@@ -70,8 +72,8 @@ investigating a suspect chapter.
 
 ## 8. Glossary and convention drift
 
-- **Symptom:** the same term comes out in three forms across the book; quotation
-  marks in one chapter, dashes in another.
+- **Symptom:** a fixed term in the same sense varies without an allowed inflection
+  or contextual reason; quotation marks in one chapter, dashes in another.
 - **Cause:** decisions stayed only in the conversation and were lost when switching
   calls.
 - **Fix:** record each decision at the end of the chapter (see
@@ -83,7 +85,8 @@ investigating a suspect chapter.
 
 - **Symptom:** "1642" becomes "1624"; a name changes spelling.
 - **Cause:** model copy error, or an unwarranted "correction".
-- **Fix:** restore the source value.
+- **Fix:** restore erroneous source values or spellings, retaining legitimate
+  target notation, exonyms and explicit Translate entries.
 - **Detect:** extract numbers and names from source and output and compare the sets;
   a number mismatch is a real failure, not an alert.
 

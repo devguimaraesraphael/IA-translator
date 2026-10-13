@@ -142,6 +142,12 @@ class NumberTests(unittest.TestCase):
         self.assertEqual(g3.findings, [])
         self.assertTrue(g3.notes)
 
+    def test_allow_number_accepts_time_token_with_colon(self):
+        w = Workspace(self)
+        w.write("a.md", "At 6 p.m. he left.", "As seis da tarde ele saiu.")
+        self.assertTrue(w.run()["G3"].failed)
+        self.assertEqual(w.run(allow_number=["a.md:T18:00"])["G3"].findings, [])
+
     def test_spelled_out_numbers_ignored(self):
         w = Workspace(self)
         w.write("a.md", "He had twenty sheep.", "Ele tinha vinte ovelhas.")

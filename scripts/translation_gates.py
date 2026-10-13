@@ -397,7 +397,7 @@ def gate_glossary(pairs: list[Pair], glossary: Glossary, kind: str) -> GateResul
 def parse_allowed(entries: list[str]) -> dict[str, set[str]]:
     allowed: dict[str, set[str]] = {}
     for entry in entries:
-        name, _, value = entry.rpartition(":")
+        name, _, value = entry.partition(":")
         if not name or not value:
             raise SystemExit(f"invalid --allow-number (use file.md:value): {entry}")
         allowed.setdefault(name, set()).add(canonical_number(value))

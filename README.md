@@ -16,6 +16,7 @@ Claude Code skills, scripts and templates for translating fiction written in Mar
 | `export-manuscript` | Compiles the chapters into epub, pdf or docx with Pandoc. |
 | `translation-gates` | Compares translation and source by script: file pairing, paragraph and heading parity, numbers, passages returned in the source language, truncation, glossary. |
 | `translation-mqm` | Sampled MQM-style score, with the judge in a separate session and noise measurement. |
+| `translate-end-to-end` | Fully automatic mode: takes only a language and a file or folder, then translates, runs the gates, judges every passage with an independent judge, retranslates failing passages (up to 10 times each), checks consistency and writes a report. No human gate. |
 
 Story-creation skills (scene writing, brainstorming, arc analysis and the like) are left out on purpose: a translator does not decide plot or structure.
 
@@ -31,11 +32,19 @@ flowchart LR
   F --> G[export-manuscript]
 ```
 
+## Fully automatic mode
+
+```text
+/translate-end-to-end language=<language-tag> path=<file-or-folder>
+```
+
+Takes only the target language and a file, or a folder whose files form one work. It sets up the workspace by itself, translates, runs the gates, judges every passage with an independent judge, retranslates failing passages (up to 10 times each, always keeping the best version), checks consistency, audits with a second judge and writes a report. No human step is needed; the result is machine-verified, not human reviewed.
+
 ## Layout
 
 ```text
 skills/              one folder per skill (SKILL.md + references/ loaded on demand)
-scripts/             translation_gates.py, mqm_score.py and their tests (Python 3, stdlib only)
+scripts/             translation_gates.py, mqm_score.py, e2e_controller.py and their tests (Python 3, stdlib only)
 templates/project/   translation/ skeleton to copy into a book project
 install.sh           symlinks the skills into ~/.claude/skills
 ```
@@ -62,7 +71,7 @@ Fill in `context/source-profile.md`, resolve the glossary's `TO DECIDE` entries 
 ```bash
 python3 scripts/translation_gates.py --source <sources> --target <manuscript> --glossary <glossary.md> --glob '0*.md'
 python3 scripts/mqm_score.py sample --source <sources> --target <manuscript> --glob '0*.md' -n 40 --seed 1 --out sample.json
-python3 -m unittest scripts/test_translation_gates.py scripts/test_mqm_score.py
+python3 -m unittest scripts/test_translation_gates.py scripts/test_mqm_score.py scripts/test_e2e_controller.py
 ```
 
 The gates only report. A changed number fails the run, while terminology and passages returned in the source language only warn (use `--strict` to fail on them). Reading the sample before fixing anything is part of the process.

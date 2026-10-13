@@ -156,22 +156,28 @@ def judge_prompt(passages, lang):
         f"=== PASSAGE id={p['id']} type={p['type']} ===\n--- SOURCE ---\n{p['source']}\n--- TRANSLATION ({lang}) ---\n{p['target']}"
         for p in passages
     )
-    return f"""You are a bilingual literary editor auditing a fiction translation into {language}.
-For each passage below, compare the translation with the source and list every real error.
+    return f"""You are a bilingual editor auditing a translation into {language} for its actual genre and audience.
+For each passage below, compare the translation with the source and list every real error. Verify; do not rewrite as a coauthor.
 
 Rules:
 - Judge meaning, voice and conventions against the source. A smooth sentence that changes the meaning is an error.
 - Do not penalise deliberate choices (kept foreign words, adapted idioms) unless they break meaning or contradict the glossary you were given.
 - Report an error only when you can point to a concrete problem. A clean passage has an empty error list.
+- Keep correct, natural variants unchanged. A preferred synonym, closer literal wording or repetition alone is not a defect.
+- Include source/target evidence and concrete impact in each short note: changed information, incorrect language, genuinely unnatural phrasing or a broken applicable convention.
+- Apply glossary rules to their defined sense, not ordinary uses of technical words. Allow grammatical inflection and idiomatic reformulation that preserves meaning.
+- Objective spelling, agreement and punctuation errors remain reportable. Group duplicate findings without inflating severity.
+- Examine subtext, wordplay and literary effects where the source uses them; do not invent them in plain exposition. Preserve nuances that matter to the argument, instruction, facts or voice.
+- Do not demand a minimum number of findings or justify clean lexical choices. A merely possible ambiguity is not an error without a plausible contextual misunderstanding.
 - Count one problem once; do not stack several categories on the same problem.
 
 Categories (use exactly these labels):
 {cats}
 
 Severities:
-- minor: noticeable but does not change meaning or reading flow much.
-- major: changes meaning, breaks the voice or the reading flow, or would make an editor stop and fix it.
-- critical: reverses or destroys a key meaning, drops a plot-relevant fact, or leaves a passage unusable.
+- minor: a demonstrable local language or fidelity defect while the passage remains usable; not an acceptable alternative or preference.
+- major: substantially changes meaning, breaks an important voice/effect or seriously impedes comprehension. Routine spelling, capitalization or a familiar untranslated place name is not automatically major.
+- critical: reverses or destroys a key meaning, drops a crucial fact, or leaves a passage unusable.
 
 Answer with ONLY a JSON array, one object per passage, covering every id below:
 [{{"id": "<passage id>", "errors": [{{"c": "<category>", "s": "<minor|major|critical>", "n": "<short note>"}}]}}]

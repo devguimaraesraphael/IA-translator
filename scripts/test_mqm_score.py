@@ -166,7 +166,14 @@ class PromptTests(unittest.TestCase):
             self.assertEqual(m.main(["prompt", "--sample", str(path), "--batch", "3", "--outdir", str(out)]), 0)
             files = sorted(out.glob("batch-*.md"))
             self.assertEqual(len(files), 3)
-            self.assertIn(sample["passages"][0]["id"], files[0].read_text(encoding="utf-8"))
+            prompt = files[0].read_text(encoding="utf-8")
+            self.assertIn(sample["passages"][0]["id"], prompt)
+            self.assertIn("actual genre and audience", prompt)
+            self.assertIn("Keep correct, natural variants unchanged", prompt)
+            self.assertIn("source/target evidence and concrete impact", prompt)
+            self.assertIn("ordinary uses of technical words", prompt)
+            self.assertIn("spelling, agreement and punctuation errors remain reportable", prompt)
+            self.assertNotIn("auditing a fiction translation", prompt)
 
 
 if __name__ == "__main__":

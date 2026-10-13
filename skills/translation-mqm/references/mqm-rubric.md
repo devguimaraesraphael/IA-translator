@@ -1,6 +1,29 @@
-# MQM rubric for fiction
+# MQM rubric for translation
 
 Deliberately short list: long lists lead the judge to category-shopping (stacking labels on the same problem). One problem, one category.
+
+## Defect test (before scoring)
+
+Evaluate fidelity throughout the assigned text, using its actual genre and audience.
+Act as a verifier, not a second translator. Keep correct, natural variants unchanged.
+Before reporting an error, identify the source/target wording and the concrete
+defect: changed meaning, lost information, incorrect language, demonstrably
+unnatural phrasing, or a broken applicable convention. Include that evidence and
+impact concisely in the existing note field; do not add output fields.
+
+- A preferable synonym, closer literal wording or an alternative interpretation
+	that readers are unlikely to make is not sufficient evidence of error.
+- Repetition alone is not a defect. Show the actual disruption, not a frequency.
+- Apply glossary entries to their defined sense. An ordinary use of a word is not
+	automatically a collision with its technical meaning. Allow grammatical inflection.
+- Implicit grammatical information and idiomatic reformulation are not omissions
+	unless a relevant distinction is actually lost in context.
+- Preserve source-supported nuance when it matters to the fact, instruction,
+	argument, voice or intended effect. Do not ignore real defects merely to save work.
+- Objective spelling, agreement and punctuation errors remain reportable even
+	when the sentence is understandable. Group duplicates; do not inflate severity.
+- Do not invent an error quota or explain clean lexical choices. If no concrete
+	defect is established, return an empty error list for that passage.
 
 ## Categories
 
@@ -20,8 +43,8 @@ Deliberately short list: long lists lead the judge to category-shopping (stackin
 
 ## Severities (weight)
 
-- **minor (1):** the reader notices, but meaning and rhythm survive. E.g. a repeated connective, a light calque in a secondary line of dialogue.
-- **major (5):** changes the meaning, breaks the voice or would stop an editor. E.g. "she didn't say a word" rendered as "she said a word"; a dry character turned warm; a joke that stops working.
+- **minor (1):** a demonstrable local defect while the passage remains usable, such as a spelling error, missing required article or clearly unnatural collocation. Mere repetition or a less-preferred synonym does not qualify.
+- **major (5):** substantially changes meaning, breaks an important voice/effect or seriously impedes comprehension. E.g. "she didn't say a word" rendered as "she said a word"; a dry character turned warm; a joke that stops working. An untranslated familiar place name or a capitalization mismatch is not automatically major; assess its actual impact.
 - **critical (10):** reverses or destroys a central meaning, loses a fact the plot uses, or leaves the passage unusable. E.g. a lost negation that swaps who did what; a reveal rendered so the reader understands the opposite.
 
 When unsure between two severities, pick the lower one and give the reason in the note.

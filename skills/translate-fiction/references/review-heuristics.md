@@ -27,7 +27,18 @@ people to ignore every warning.
 3. Classify: real defect, false positive or doubt for human review.
 4. Fix only the affected passage. If most of the sample is false positives, adjust or
    discard the heuristic instead of acting on the alerts.
-5. Record in the Step 2 log what was flagged, what was real and what was discarded.
+5. Summarize actual corrections and material discarded alerts in the Step 2 log.
+  Do not narrate every clean check or routine lexical decision.
+
+## Editorial impact filter
+
+Keep correct, natural variants. A suspected defect needs the source/target wording
+and a concrete consequence: lost information, an incorrect instruction, actual
+grammar or convention errors, genuinely unnatural phrasing, or a plausible
+misreading in context. A preferred synonym or repetition count is not evidence.
+Apply glossary terms to their technical sense, allowing ordinary uses and inflection.
+Preserve meaningful nuance and explicit exercise constraints; do not dismiss them
+as cosmetic. Group objective copyedits rather than reopening individual word choices.
 
 ## What the floor and the sample protect
 
